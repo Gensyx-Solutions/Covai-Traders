@@ -1,0 +1,223 @@
+<?php
+// This is a static demo page. No server-side logic is needed.
+?>
+<!doctype html>
+<html class="no-js " lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
+<title>Covai Traders - Sales Report</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<!-- Favicon-->
+<link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
+<!-- Bootstrap Material Datetime Picker Css -->
+<link href="assets/plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+<link rel="stylesheet" href="assets/plugins/bootstrap-select/css/bootstrap-select.css" />
+<!-- Select2 -->
+<link rel="stylesheet" href="assets/plugins/select2/select2.css" />
+<!-- Custom Css -->
+<link rel="stylesheet" href="assets/css/style.min.css">
+<!-- JQuery DataTable Css -->
+<link rel="stylesheet" href="assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css">
+
+<style>
+    .dtp { z-index: 10000 !important; }
+    #salesTable_filter { display: none; } /* Hide default datatable search */
+</style>
+</head>
+
+<body class="theme-blush">
+
+<!-- Page Loader -->
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="m-t-30"><img class="zmdi-hc-spin" src="assets/images/loader.svg" width="48" height="48" alt="Aero"></div>
+        <p>Please wait...</p>
+    </div>
+</div>
+
+<!-- Overlay For Sidebars -->
+<div class="overlay"></div>
+
+<!-- Main Search -->
+<div id="search">
+    <button id="close" type="button" class="close btn btn-primary btn-icon btn-icon-mini btn-round">x</button>
+    <form>
+        <input type="search" value="" placeholder="Search..." />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<!-- Right Icon menu Sidebar -->
+<div class="navbar-right">
+    <ul class="navbar-nav">
+        <li><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
+        <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i class="zmdi zmdi-apps"></i></a>
+            <ul class="dropdown-menu slideUp2">
+                <li class="header">App Sortcute</li>
+            </ul>
+        </li>
+        <li class="dropdown">
+            <a href="javascript:void(0);" class="dropdown-toggle" title="Notifications" data-toggle="dropdown" role="button"><i class="zmdi zmdi-notifications"></i>
+                <div class="notify"><span class="heartbit"></span><span class="point"></span></div>
+            </a>
+            <ul class="dropdown-menu slideUp2">
+                <li class="header">Notifications</li>
+            </ul>
+        </li>
+        <li><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
+        <li><a href="Logout" class="mega-menu" title="Sign Out"><i class="zmdi zmdi-power"></i></a></li>
+    </ul>
+</div>
+
+<!-- Left Sidebar -->
+<aside id="leftsidebar" class="sidebar">
+    <div class="navbar-brand">
+        <button class="btn-menu ls-toggle-btn" type="button"><i class="zmdi zmdi-menu"></i></button>
+        <a href="SalesManagement"><img src="new-logo1.png" width="25" alt="Aero"><span class="m-l-10">Covai Traders</span></a>
+    </div>
+    <?php include 'sidebar.php'; ?>
+</aside>
+
+<!-- Right Sidebar -->
+<aside id="rightsidebar" class="right-sidebar">
+    <?php include 'sidebar-right.php'; ?>
+</aside>
+
+<section class="content">
+    <div class="body_scroll">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Sales Report</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="Dashboard"><i class="zmdi zmdi-home"></i> Dashboard</a></li>
+                        <li class="breadcrumb-item"><a href="SalesList">Sales</a></li>
+                        <li class="breadcrumb-item active">Sales Report</li>
+                    </ul>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-12">                
+                    <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container-fluid" id="report-filters">
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>Report</strong> Filters</h2>
+                        </div>
+                        <div class="body">
+                            <div class="row clearfix">
+                                <div class="col-md-5 col-sm-12">
+                                    <label for="customerName">Customer</label>
+                                    <select id="customerName" class="form-control show-tick ms select2" data-placeholder="Select a customer" style="width: 100%;" disabled>
+                                        <option value="all">All Customers</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <label for="fromDate">From Date</label>
+                                    <div class="form-group">
+                                        <input type="text" id="fromDate" class="form-control datetimepicker" placeholder="Choose date..." disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-6">
+                                    <label for="toDate">To Date</label>
+                                    <div class="form-group">
+                                        <input type="text" id="toDate" class="form-control datetimepicker" placeholder="Choose date..." disabled>
+                                    </div>
+                                </div>
+                                <div class="col-md-1 col-sm-12">
+                                     <label>&nbsp;</label>
+                                    <button id="getReportBtn" class="btn btn-primary btn-block" disabled>Go</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid" id="report-container">
+            <div class="row clearfix">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2><strong>Sales Report</strong></h2>
+                        </div>
+                        <div class="body">
+                            <div class="mb-3 d-flex justify-content-between">
+                                <div>
+                                    <button class="btn btn-success" disabled>Excel</button>
+                                    <button class="btn btn-danger" disabled>PDF</button>
+                                    <button class="btn btn-info" disabled>Print</button>
+                                </div>
+                                <div class="w-25">
+                                    <input type="text" id="customSearch" class="form-control" placeholder="Search..." disabled>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="salesTable" class="table table-bordered table-striped table-hover dataTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th><th>Date</th><th>Name</th><th>Remarks</th>
+                                            <th>12kg L</th><th>12kg E</th><th>17kg L</th><th>17kg E</th>
+                                            <th>SRG</th><th>Adap</th><th>Stove</th><th>Lighter</th><th>Hose</th><th>Hydralic</th>
+                                            <th>Total Amt</th><th>Deposit</th><th>Amt Paid</th><th>Amt OD</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td colspan="18" class="text-center">No data available for this demo.</td></tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="font-weight-bold">
+                                            <td colspan="4" class="text-right">Total</td>
+                                            <td id="total_load12kg">0</td><td id="total_empty12kg">0</td>
+                                            <td id="total_load17kg">0</td><td id="total_empty17kg">0</td>
+                                            <td id="total_srg">0</td><td id="total_adap">0</td>
+                                            <td id="total_stove">0</td><td id="total_lighter">0</td>
+                                            <td id="total_hose">0</td><td id="total_hydralic">0</td>
+                                            <td id="total_totalAmount">0.00</td><td id="total_deposit">0.00</td>
+                                            <td id="total_amountPaid">0.00</td><td id="total_amountOD">0.00</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Jquery Core Js --> 
+<script src="assets/bundles/libscripts.bundle.js"></script>
+<script src="assets/bundles/vendorscripts.bundle.js"></script>
+<script src="assets/plugins/momentjs/moment.js"></script>
+<script src="assets/plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+<script src="assets/plugins/select2/select2.min.js"></script>
+<script src="assets/bundles/datatablescripts.bundle.js"></script>
+<script src="assets/bundles/mainscripts.bundle.js"></script>
+
+<script>
+$(function() {
+    // Initialize plugins for visual representation, but they will be disabled.
+    $('.datetimepicker').bootstrapMaterialDatePicker({
+        format: 'YYYY-MM-DD',
+        clearButton: true,
+        weekStart: 1,
+        time: false
+    });
+    $('#customerName').select2();
+});
+</script>
+
+</body>
+</html>
